@@ -36,8 +36,7 @@ const getUserById = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const queryParams = req.query
-    const userData = await getUserService(queryParams)
+    const userData = await getUserService()
     res.status(StatusCodes.OK).json(userData)
   } catch (error) {
     console.error(error)

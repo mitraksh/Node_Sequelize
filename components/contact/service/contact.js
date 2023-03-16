@@ -1,8 +1,11 @@
-const { Contact, contact } = require('../../../view/contact')
+const { Contact } = require('../../../view/contact')
+const db = require('../../../models')
 
 const addContact = async contact => {
+  const transaction = await db.sequelize.transaction()
   try {
-    const contactData = await contact.addContact()
+    const contactData = await contact.addContact(transaction)
+    await transaction.commit()
     return contactData
   } catch (error) {
    console.error(error)
@@ -12,6 +15,7 @@ const addContact = async contact => {
 const getContactById = async contactID => {
   try {
     const contact = await Contact.getContactById(contactID)
+    
     return contact
   } catch (error) {
     console.error(error)

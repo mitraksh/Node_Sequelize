@@ -5,6 +5,7 @@ const errorHandlerMiddleware = require("./middleware/errorHandlerMiddleware")
 const JwtToken = require("./middleware/jwt")
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const db = require('./db/connect')
 
 const router = require('./components')
 
@@ -28,6 +29,8 @@ app.use(function (req, res, next) {
 
 app.get('/', (req, res) => {
   try {
+    db.authenticate()
+    console.log('DB Connected')
     res.send('Welcome to Users')
     
   } catch (e) {

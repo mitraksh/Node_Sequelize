@@ -1,4 +1,6 @@
-const user = [{"id":1,"firstName":"mitraksh","lastName":"r","email":"mitraksh@gmail.com","password":"abc"}];
+// const user = [{"id":1,"firstName":"mitraksh","lastName":"r","email":"mitraksh@gmail.com","password":"abc"}];
+const { Op } = require('sequelize')
+const db = require('../models/index')
 class User {
   constructor (firstName, lastName, email, password) {
     this.firstName = firstName
@@ -14,18 +16,20 @@ class User {
 
   createPayload () {
     return {
-      id: user.length + 1,
-      firstName: this.firstName,
-      lastName: this.lastName,
+      first_name: this.firstName,
+      last_name: this.lastName,
       email: this.email,
       password: this.password,
     }
   }
 
-  async addUser () {
+  async addUser (transaction) {
     try {
-        const pushUser = user.push(this.createPayload());
-        return pushUser
+      const users = await db.user.create(this.createPayload(), {
+        transaction: transaction
+      })
+        // const pushUser = user.push(this.createPayload());
+        return users
     } catch (error) {
       console.error(error)
     }
@@ -34,19 +38,29 @@ class User {
 
   static async getUserById (userID) {
     try {
-      if(userID==0){
-        console.error("0 is not allowed");
-        return "0 is not allowed"
-      }
-      return user[userID-1]
+      // if(userID==0){
+      //   console.error("0 is not allowed");
+      //   return "0 is not allowed"
+      // }
+
+      const user = await db.user.findOne({
+        where: { id: userID },
+        attributes: {
+          exclude: ['password', 'created_at', 'updated_at', 'deleted_at']
+        },
+      })
+
+      return user
     } catch (error) {
       console.error(error)
     }
   }
 
-  static async getUser () {
+  static async getUser (queryParams) {
     try {
-      return user
+      const result = await db.user.findAll()
+
+      return result
     } catch (error) {
       console.error(error)
     }
@@ -54,4 +68,4 @@ class User {
 
 }
 
-module.exports = { User, user }
+module.exports = { User }
