@@ -1,8 +1,10 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-
+const errorHandlerMiddleware = require("./middleware/errorHandlerMiddleware")
+const JwtToken = require("./middleware/jwt")
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const router = require('./components')
 
@@ -14,6 +16,7 @@ app.use(
   })
 )
 app.use(express.json())
+app.use(cookieParser())
 
 app.use(function (req, res, next) {
   res.header('Content-Type', 'application/json;charset=UTF-8')
@@ -33,6 +36,20 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/', router)
+
+
+app.get("/login", (req, res, next) => {
+  next()
+  res.send("JSON WEB TOKEN")
+}, () => {
+  console.log("next");
+})
+
+app.use(errorHandlerMiddleware)
+app.use("*", (req, res) => {
+  // not found
+  res.status(404).json()
+})
 
 const startApp = () => {
   try {

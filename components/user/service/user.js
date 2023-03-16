@@ -1,4 +1,5 @@
 const { User, user } = require('../../../view/user')
+const jwt = require('../../../middleware/jwt');
 
 const addUser = async user => {
   try {
@@ -26,6 +27,7 @@ const getUser = async queryParams => {
     console.error(error)
   }
 }
+
 
 module.exports = {
   addUser,

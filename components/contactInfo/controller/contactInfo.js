@@ -6,6 +6,7 @@ const {
 } = require('../service/contactInfo')
 const { ContactInfo, contactInfo } = require('../../../view/contactInfo')
 const {contact} = require('../../../view/contact')
+const {user} = require('./../../../view/user')
 
 const createContactInfo = async (req, res, next) => {
   try {
