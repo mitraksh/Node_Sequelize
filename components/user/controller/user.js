@@ -56,8 +56,6 @@ const jwtLoginVerify = async (req, res, next) => {
         if(user[c].email == email && user[c].password == password){
           console.log("email and password Found");
           res.send("email and password Found")
-          const jwt = new JwtToken()
-          const token = await jwt.verify()
           break
         }
       }

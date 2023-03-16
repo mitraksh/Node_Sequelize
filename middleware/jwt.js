@@ -12,7 +12,8 @@ class JwtToken{
         const token = jwt.sign(JSON.stringify(this), "my_jwt_secret_key");
         return token
     }
-    static async verify(){
+    static async verify(req,res,next){
+        console.log(req.cookies);
         const tokenValue = req.cookies["authorization"]
         console.log("tokenValue", tokenValue);
         if (!tokenValue) {
