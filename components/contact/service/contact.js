@@ -22,10 +22,31 @@ const getContactById = async contactID => {
   }
 }
 
-const getContact = async queryParams => {
+const getContact = async () => {
   try {
-    const contact = await Contact.getContact(queryParams)
+    const contact = await Contact.getContact()
     return contact
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const updateContacts = async (contact,contactID) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const contactupdate = await contact.updateContact(transaction,contactID)
+    await transaction.commit()
+    return contactupdate
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const deleteContacts = async (contactID) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const contactdelete = await Contact.deleteContact(transaction,contactID)
+    return contactdelete
   } catch (error) {
     console.error(error)
   }
@@ -35,4 +56,6 @@ module.exports = {
   addContact,
   getContactById,
   getContact,
+  updateContacts,
+  deleteContacts
 }

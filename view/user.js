@@ -66,6 +66,36 @@ class User {
     }
   }
 
+   async updateUser (transaction,userID) {
+    try {
+      const updateuser = await db.user.update(this.createPayload(), {
+        where: {
+          id: userID
+        },
+        transaction: transaction
+      })
+
+      return updateuser
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  static async deleteUser (transaction,userID) {
+    try {
+      const result = await db.user.destroy({
+        where: {
+          id: userID
+        },
+        transaction: transaction
+      })
+
+      return result
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 }
 
 module.exports = { User }

@@ -66,6 +66,36 @@ class ContactInfo {
     }
   }
 
+  async updateContactInfo (transaction,contactInfoID) {
+    try {
+      const updatecontactinfo = await db.contactInfo.update(this.createPayload(), {
+        where: {
+          id: contactInfoID
+        },
+        transaction: transaction
+      })
+
+      return updatecontactinfo
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  static async deleteContactInfo (transaction,contactInfoID) {
+    try {
+      const result = await db.contactInfo.destroy({
+        where: {
+          id: contactInfoID
+        },
+        transaction: transaction
+      })
+
+      return result
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 }
 
 module.exports = { ContactInfo }

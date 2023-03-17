@@ -3,9 +3,11 @@ const {
   addContact,
   getContactById: getContactByIdService,
   getContact: getContactService,
+  updateContacts:updateContactService,
+  deleteContacts:deleteContactService,
 } = require('../service/contact')
-const { Contact, contact } = require('../../../view/contact')
-const {user} = require('../../../view/user')
+const { Contact } = require('../../../view/contact')
+// const {user} = require('../../../view/user')
 
 const createContact = async (req, res, next) => {
   try {
@@ -56,8 +58,27 @@ const getContact = async (req, res, next) => {
   }
 }
 
+const updateContacts = async (req,res,next) => {
+  const { name } = req.body
+  const userid = req.params.userID
+  const contact = new Contact(userid, name)
+  const contactData = await updateContactService(contact,userid)
+  res.status(StatusCodes.OK).json(contactData)
+}
+
+const deleteContacts = async (req,res,next) => {
+  const userID = req.params.userID
+  // console.log(userID)
+  const contactData = await deleteContactService(userID)
+  res.status(StatusCodes.OK).json(contactData)
+}
+
+
+
 module.exports = {
   createContact,
   getContactById,
   getContact,
+  updateContacts,
+  deleteContacts,
 }

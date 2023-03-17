@@ -32,9 +32,32 @@ const getUser = async queryParams => {
   }
 }
 
+const updateUsers = async (user,userID) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const userupdate = await user.updateUser(transaction,userID)
+    await transaction.commit()
+    return userupdate
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const deleteUsers = async (userID) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const userdelete = await User.deleteUser(transaction,userID)
+    return userdelete
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 
 module.exports = {
   addUser,
   getUserById,
   getUser,
+  updateUsers,
+  deleteUsers,
 }

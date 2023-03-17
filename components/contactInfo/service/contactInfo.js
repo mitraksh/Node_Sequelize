@@ -30,8 +30,32 @@ const getContactInfo = () => {
   }
 }
 
+const updateContactInfos = async (contact,contactInfoID) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const contactinfoupdate = await contact.updateContactInfo(transaction,contactInfoID)
+    await transaction.commit()
+    return contactinfoupdate
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const deleteContactInfos = async (contactInfoID) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const contactinfoupdate = await ContactInfo.deleteContactInfo(transaction,contactInfoID)
+    return contactinfoupdate
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
 module.exports = {
   addContactInfo,
   getContactInfoById,
   getContactInfo,
+  updateContactInfos,
+  deleteContactInfos,
 }

@@ -3,7 +3,9 @@ const {
   createUser,
   getUserById,
   getUser,
-  jwtLoginVerify
+  jwtLoginVerify,
+  updateUsers,
+  deleteUsers,
 } = require('./controller/user.js')
 const JwtToken = require('../../middleware/jwt')
 
@@ -13,5 +15,9 @@ userRouter.post('/', createUser)
 userRouter.get('/', getUser)
 userRouter.get('/:userID', getUserById)
 userRouter.post('/login',JwtToken.verify, jwtLoginVerify)
+userRouter.put('/:userID', updateUsers)
+userRouter.delete('/:userID', deleteUsers)
+
+
 
 module.exports = userRouter

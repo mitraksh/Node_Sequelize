@@ -7,7 +7,7 @@ class Contact {
     this.name = name
   }
 
-    setUserID (id) {
+    setContactID (id) {
     this.id = id
     }
 
@@ -22,12 +22,12 @@ class Contact {
 
   async addContact (transaction) {
     try {
-        // const pushUser = contact.push(this.createPayload());
+        // const pushContact = contact.push(this.createPayload());
         const contacts = await db.contact.create(this.createPayload(), {
           transaction: transaction
         })
         return contacts
-        return pushUser
+        return pushContact
     } catch (error) {
       console.error(error)
     }
@@ -49,6 +49,10 @@ class Contact {
     //     }
     const contacts = await db.contact.findOne({
       where: { id: contactID },
+      include: {
+          model: db.user,
+          required: true
+        },
     })
         return contacts
     } catch (error) {
@@ -58,7 +62,43 @@ class Contact {
 
   static async getContact () {
     try {
-      const result = await db.contact.findAll()
+      const result = await db.contact.findAll({
+        include: {
+            model: db.user,
+            // where: { deleted_at: null },
+            required: true,
+          },
+      })
+
+      return result
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async updateContact (transaction,contactID) {
+    try {
+      const updateuser = await db.contact.update(this.createPayload(), {
+        where: {
+          id: contactID
+        },
+        transaction: transaction
+      })
+
+      return updateuser
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  static async deleteContact (transaction,contactID) {
+    try {
+      const result = await db.contact.destroy({
+        where: {
+          id: contactID
+        },
+        transaction: transaction
+      })
 
       return result
     } catch (error) {

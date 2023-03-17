@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'contactInfo',
     underscored: true,
-    tableName: 'contactInfos'
+    tableName: 'contactInfos',
+    // paranoid: true,
   });
   return contactInfo;
 };

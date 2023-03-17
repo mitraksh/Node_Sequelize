@@ -3,6 +3,8 @@ const {
   addContactInfo,
   getContactInfoById: getContactInfoByIdService,
   getContactInfo: getContactInfoService,
+  updateContactInfos:updateContactInfoService,
+  deleteContactInfos:deleteContactInfoService,
 } = require('../service/contactInfo')
 const { ContactInfo, contactInfo } = require('../../../view/contactInfo')
 const {contact} = require('../../../view/contact')
@@ -57,8 +59,25 @@ const getContactInfo = async (req, res, next) => {
   }
 }
 
+const updateContactInfos = async (req,res,next) => {
+  const { type,number } = req.body
+  const contactID = req.params.contactid
+  const contactinfo = new ContactInfo(contactID,type,number)
+  const contactInfoData = await updateContactInfoService(contactinfo,contactID)
+  res.status(StatusCodes.OK).json(contactInfoData)
+}
+
+const deleteContactInfos = async (req,res,next) => {
+  const contactID = req.params.contactid
+  // console.log(userID)
+  const contactInfoData = await deleteContactInfoService(contactID)
+  res.status(StatusCodes.OK).json(contactInfoData)
+}
+
 module.exports = {
   createContactInfo,
   getContactInfoById,
   getContactInfo,
+  updateContactInfos,
+  deleteContactInfos,
 }

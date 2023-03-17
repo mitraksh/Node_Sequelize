@@ -3,6 +3,8 @@ const {
   addUser,
   getUserById: getUserByIdService,
   getUser: getUserService,
+  updateUsers:updateUserService,
+  deleteUsers:deleteUserService,
 } = require('../service/user')
 const { User, user } = require('../../../view/user')
 const JwtToken = require('../../../middleware/jwt')
@@ -67,9 +69,26 @@ const jwtLoginVerify = async (req, res, next) => {
   }
 }
 
+const updateUsers = async (req,res,next) => {
+  const {firstName, lastName, email, password} = req.body
+  const userID = req.params.userID
+  const user = new User(firstName, lastName, email, password)
+  const userData = await updateUserService(user,userID)
+  res.status(StatusCodes.OK).json(userData)
+}
+
+const deleteUsers = async (req,res,next) => {
+  const userID = req.params.userID
+  // console.log(userID)
+  const userData = await deleteUserService(userID)
+  res.status(StatusCodes.OK).json(userData)
+}
+
 module.exports = {
   createUser,
   getUserById,
   getUser,
-  jwtLoginVerify
+  jwtLoginVerify,
+  updateUsers,
+  deleteUsers,
 }
